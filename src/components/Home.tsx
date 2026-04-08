@@ -123,16 +123,13 @@ export function Home({ onNavigate }: HomeProps) {
             <p className="text-xl font-bold text-arch-navy dark:text-arch-light font-cinzel">{users.filter(u => u.isOnline).length}</p>
             <p className="text-[10px] text-arch-dark/60 dark:text-arch-light/60 uppercase font-bold tracking-wider">Online</p>
           </div>
-          <button 
-            onClick={() => onNavigate('settings')}
-            className="bg-arch-brown/10 dark:bg-arch-brown/30 p-4 rounded-2xl shadow-sm border border-arch-brown/20 dark:border-arch-brown/40 text-center transition-colors hover:bg-arch-brown/20 dark:hover:bg-arch-brown/40"
-          >
+          <div className="bg-arch-brown/10 dark:bg-arch-brown/30 p-4 rounded-2xl shadow-sm border border-arch-brown/20 dark:border-arch-brown/40 text-center transition-colors">
             <div className="bg-white dark:bg-arch-navy w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2 text-arch-brown dark:text-arch-light shadow-sm">
-              <Plus size={20} />
+              <CheckCircle size={20} />
             </div>
-            <p className="text-xl font-bold text-arch-navy dark:text-arch-light font-cinzel">AI</p>
-            <p className="text-[10px] text-arch-dark/60 dark:text-arch-light/60 uppercase font-bold tracking-wider">Integración</p>
-          </button>
+            <p className="text-xl font-bold text-arch-navy dark:text-arch-light font-cinzel">156</p>
+            <p className="text-[10px] text-arch-dark/60 dark:text-arch-light/60 uppercase font-bold tracking-wider">Completados</p>
+          </div>
         </section>
 
         {/* My Active Projects */}

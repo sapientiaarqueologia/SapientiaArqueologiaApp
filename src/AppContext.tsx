@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { GoogleGenAI } from '@google/genai';
 import { User, Ad, ImageItem, VideoItem, FileItem, NewsItem, Chat, Message, Review, Note, MOCK_USERS, MOCK_ADS, MOCK_IMAGES, MOCK_VIDEOS, MOCK_FILES, MOCK_NEWS, MOCK_CHATS, MOCK_NOTES, CURRENT_USER } from './data';
 
 interface AppContextType {
@@ -29,6 +30,7 @@ interface AppContextType {
   addReview: (userId: string, rating: number, comment: string) => void;
   markChatAsRead: (chatId: string) => void;
   updateCurrentUser: (data: Partial<User>) => void;
+  analyzeImage: (base64Data: string, mimeType: string) => Promise<string>;
   darkMode: boolean;
   toggleDarkMode: () => void;
   language: string;
@@ -271,11 +273,38 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setUsers(prevUsers => prevUsers.map(u => u.id === currentUser.id ? { ...u, ...data } : u));
   };
 
+  const analyzeImage = async (base64Data: string, mimeType: string) => {
+    try {
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const response = await ai.models.generateContent({
+        model: 'gemini-3-flash-preview',
+        contents: {
+          parts: [
+            {
+              inlineData: {
+                data: base64Data,
+                mimeType: mimeType
+              }
+            },
+            {
+              text: "Actúa como un experto arqueólogo. Analiza esta imagen de un posible artefacto o sitio arqueológico. Proporciona una descripción detallada, identifica de qué podría tratarse, sugiere un periodo histórico probable y explica su importancia cultural. Responde en español con un tono profesional y educativo. Usa formato Markdown."
+            }
+          ]
+        }
+      });
+      return response.text || "No se pudo generar un análisis para esta imagen.";
+    } catch (error) {
+      console.error('Error analyzing image with Gemini:', error);
+      throw error;
+    }
+  };
+
   return (
     <AppContext.Provider value={{
       users, ads, images, videos, files, news, chats, notes, currentUser,
       activeChatId, setActiveChatId,
       addAd, addImage, addVideo, addFile, addNews, addNote, updateNote, deleteNote, deleteChat, sendMessage, createChat, toggleLikeAd, addCommentToAd, addReview, markChatAsRead, updateCurrentUser,
+      analyzeImage,
       darkMode, toggleDarkMode, language, setLanguage
     }}>
       {children}
