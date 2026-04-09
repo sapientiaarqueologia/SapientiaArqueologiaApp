@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { X, FileText, Image as ImageIcon, Video, Download, Newspaper, Sparkles } from 'lucide-react';
+import { X, FileText, Image as ImageIcon, Video, Download, Newspaper } from 'lucide-react';
 import { Tab } from '../App';
 import { useAppContext } from '../AppContext';
-import { AIAnalyzer } from './AIAnalyzer';
 
 interface CreateMenuProps {
   onClose: () => void;
@@ -12,7 +11,6 @@ interface CreateMenuProps {
 export function CreateMenu({ onClose, onNavigate }: CreateMenuProps) {
   const { addAd, addImage, addVideo, addFile, addNews } = useAppContext();
   const [activeForm, setActiveForm] = useState<string | null>(null);
-  const [showAIAnalyzer, setShowAIAnalyzer] = useState(false);
 
   // Form states
   const [title, setTitle] = useState('');
@@ -78,10 +76,6 @@ export function CreateMenu({ onClose, onNavigate }: CreateMenuProps) {
     onNavigate('search');
     onClose();
   };
-
-  if (showAIAnalyzer) {
-    return <AIAnalyzer onClose={() => setShowAIAnalyzer(false)} />;
-  }
 
   if (activeForm) {
     return (
@@ -263,21 +257,6 @@ export function CreateMenu({ onClose, onNavigate }: CreateMenuProps) {
             <div>
               <h3 className="font-bold text-arch-dark dark:text-arch-light font-cinzel">Publicar noticia</h3>
               <p className="text-xs text-arch-dark/60 dark:text-arch-light/60 mt-0.5">Anuncia descubrimientos o eventos</p>
-            </div>
-          </button>
-
-          <div className="h-px bg-arch-border dark:bg-arch-brown/50 my-1" />
-
-          <button 
-            onClick={() => setShowAIAnalyzer(true)}
-            className="flex items-center gap-4 p-4 bg-arch-gold/10 dark:bg-arch-gold/5 rounded-2xl border border-arch-gold/30 hover:border-arch-gold transition-colors text-left group"
-          >
-            <div className="bg-arch-gold text-arch-navy p-3 rounded-xl group-hover:scale-110 transition-transform shadow-sm">
-              <Sparkles size={24} />
-            </div>
-            <div>
-              <h3 className="font-bold text-arch-navy dark:text-arch-gold font-cinzel">Analizador de Artefactos (IA)</h3>
-              <p className="text-xs text-arch-navy/70 dark:text-arch-gold/70 mt-0.5">Identifica y analiza hallazgos con IA</p>
             </div>
           </button>
         </div>
